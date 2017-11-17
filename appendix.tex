@@ -1,0 +1,65 @@
+\appendix
+
+\chapter{Appendices}
+
+\section{Calculation Details}
+\label{sec:app-calc}
+
+As it was stated in the main text, the details for all DFT calculations are provided here. All such calculations were performed using the Vienna \textit{Ab Initio} Simulation Package (\texttt{VASP}) \cite{Kresse1996a,Kresse1996b,Kresse1999,Kresse1993} versions 5.2.1 up to 5.3.5. For further details on the DFT methods we suggest some sources in the literature \cite{FazzioCanutoVianna,Hohenberg_Kohn_64,Thomas,YangParr,Kohn_Sham_65,Fermi_28,Bloch_29,Kresse1996a,Kresse1996b,Capelle2006,Zangwill2014,Jensen,Ihm1979,Blochl1994,Kresse1999,Kresse1993}, once the theory underlying this work is beyond this thesis' scope. All figures of structures were created by the \texttt{VESTA3} software \cite{Momma2011}. In all cases except when explicitly stated, the calculations were performed using the primitive cell obtained by the \texttt{--symmetry} command line option of \texttt{Phonopy} \cite{phonopy}.
+
+The simulations of all materials presented in chapter \ref{chap:raw} were performed using three methods: the GGA PBESol \cite{Perdew2008} and hybrid HSE (20\% of Hartree-Fock exchange)\cite{Heyd2003} functionals (see appendix \ref{sec:app-hybrid}), and the PBESol functional with the Hubbard $U$ ($ 1 \leq U \leq 5$ eV) parameter \cite{Dudarev1998} for Ti(d) orbitals (see appendix \ref{sec:app-dftu}). This approach introduces an on-site Coulomb interaction of energy $U$ that can be tuned by the $U-J$ relation. $J$ is the spherically averaged matrix element of the screened Coulomb interaction between the on-site electrons which was set to $J=0$ in all cases presented. Both the unit cell and the ion positions were brought to an energy minimum where forces acting on ions were lower than $2.5 \times 10^{-3}$ eV/\AA. Spin polarization was considered for all calculations. Monkhorst-Pack sampling \cite{Monkhorst1976} of the $k$-points over the Brillouin zone was used for relaxations with PBESol and PBESol+$U$ while $\Gamma$-centered meshes were used for PDOS calculations with the same methods as well as relaxation and PDOS for the HSE calculations. A cutoff of 520 eV was used for PBESol and PBESol+$U$ and 400 eV for HSE. For Ti atoms the $3p3d4s$ electrons were considered as valence electrons while for O atoms the $2s2p$ configuration was used.
+
+
+In chapter \ref{chap:band-offset} the PBE functional \cite{Perdew1997} was used for all calculations together with the $U$ parameter for Ti(d) electrons ($U = 5$ eV). The $3p3d4s$ and $2s2p$ electrons were considered as valence electrons for Ti and O atoms, respectively, and a cutoff of 700 eV was used in the plane-wave expansion. The $k$-point sampling was generated using a $2 \times 2 \times 1$ $\Gamma$-centered grid. Spin polarization was taken into account for all calculations. Ionic positions were brought to an energy minimum where the forces on ions were lower than $2.5 \times 10^{-3}$ eV/\AA \, for the bulk materials and $5.0 \times 10^{-2}$ eV/\AA \, for the supercell containing the interface. All structural transformations were performed using built-in functions of the \texttt{Atomic Simulation Environment} (\texttt{ASE}) library \cite{Bahn2002}.
+
+The hybrid functional HSE was used for all calculations in chapter \ref{chap:charges}. The plane-wave expansion cutoff was set at 520 eV and $k$-point sampling through the Brillouin zone was performed by the Monkhorst-Pack scheme. For the neutral systems both unit cell and ions were relaxed while for the charged systems only ions were relaxed. In all cases the structural parameters were brought to a minimum of energy until forces were lower than $2.5 \times 10^{-3}$ eV/\AA. For Ti atoms the $3p4s3d$ electrons were considered as valence electrons, and for O atoms the $2s2p$ electrons were considered in the same fashion. Core level energies were obtained by solving the Kohn-Sham equation for the core electrons after the pseudopotential method was converged. The limiting chemical potentials $\mu_{\text{O}}$ and $\mu_{\text{Ti}}$ were obtained from a $\Gamma$-only calculation of a O$_2$ molecule in vacuum and a bulk calculation of metallic Ti in the hcp structure respectively.
+
+The results presented in chapter \ref{chap:bandbend} was done by developing Fortran 90 codes for both the solution to the Poisson equation and the calculation of the $i \times V$ curves. In the first case, the Poisson solver and the underlying theory were developed by Dr. Hannes Raebiger while he spend 11 months as a visiting professor in UFABC. The transmission code was developed by me. The parameters used for the Poisson solver are: homogeneous distribution of either oxygen vacancies ($V_{\text{O}}$'s) with concentration 0.005 nm$^{-3}$, and the same defect and concentration together with Ti interstitial (Ti$_{i}$'s) with concentration of 0.0025 nm$^{-3}$, the rutile bandgap $E_g = 3$ eV, relative permittivity of $\epsilon = 80$, effective masses of $m_e^* = 8.5$ and $0.4$ for heavy and light electrons respectively, and effective hole mass $m_h^* = 0.9$. The defect level $E_d$ was set at $E_{CBM} - 0.6$ eV. For the transmission code the device width was $L = 20$ nm, temperature was set to $T = 300$ K, and the effective mass of the electrons was considered $m_e^* = 8.0$.
+
+\section{DFT+U}
+\label{sec:app-dftu}
+
+Some systems are not correctly described by the LDA or GGA approximations to DFT. For example, UO$_2$ is described as a metal by LDA but experimental results present an insulator bandgap. The GGA approximation can in part overcome such problems but in many cases it is not sufficient to provide bandgap values compatible with experiment. This problem is particularly evident for compounds where the $d$ or $f$ orbitals of some atomic species are partially filled, as is the case of the Ti$_n$O$_{2n-1}$ species presented in this thesis. This issue in transition metal oxides is known to exist due to the inadequate description of the Coulomb repulsion between $d$ electrons in the metal atoms of these compounds.
+
+According to the method developed by Dudarev \textit{et al.} \cite{Dudarev1998} the LDA$+U$ functional, which is derived from a model Hamiltonian, is given by
+\begin{equation}
+ E_{\text{LDA}+U}=E_{\text{LDA}}+\frac{(U-J)}{2}\sum_{\sigma}(n_{m,\sigma}-n_{m,\sigma}^2),
+ \label{eq:LDA}
+\end{equation}
+where $E_{\text{LDA}}$ is the total energy obtained by LDA functional\footnote{No restriction is assumed for the functional used in this kind of calculation, thus any combination of GGA functional and $U$ parameter is not considered a problem.}, $U$ and $J$ are spherically averaged matrix elements of the screened Coulomb electron-electron interaction, $\sigma$ is the spin index, and $n_{m,\sigma}$ is the occupation number of the $d$ state with orbital momentum $m$ ($m = -2, -1, 0, 1, 2$). One can notice that for the limiting cases $n_{m,\sigma}\rightarrow 0$ or $1$, the second term in \ref{eq:LDA} vanishes, thus there is no contribution to the total energy for completely filled or empty orbitals. 
+
+In the particular case of the Ti$_n$O$_{2n-1}$ phases, it is noticeable from the PDOS data that both the IB and the CB are mainly of Ti(d) character, with the first and the last presenting distinct occupations. This is exactly the case where the last term in equation \ref{eq:LDA} does not vanish. The spatial localization of the $d$ electrons is changed according to the occupations that will contribute to lower the energy, leading to a more realistic description of such electrons.
+
+\section{Hybrid functionals}
+\label{sec:app-hybrid}
+Another way to overcome the bandgap problem of LDA and GGA approximations is to introduce a fraction of the exact exchange, or Hartree-Fock exchange into DFT. This is justified by the fact that DFT suffers from the \textit{self-interaction} problem. The electron-electron interaction in DFT is given by a functional of the density $\rho$,
+\begin{equation}
+ V_{ee}[\rho] = \iint \frac{\rho(\bm{r})\rho(\bm{r'})}{|\bm{r}-\bm{r'}|} \mathrm{d^3}\bm{r}\mathrm{d^3}\bm{r'} + U_{xc}[\rho]
+ \label{eq:vee-dft}
+\end{equation}
+where the first term is the classical Coulomb interaction and the exchange part, which has no classical interpretation, is included in $U_{xc}$. This last term is functional-dependent in DFT, being included as part of the exchange-correlation functional energy. In the case of Hartree-Fock calculations, the same interaction is given as a function of a set of single-particle orbitals $\{\phi_i\}$
+\begin{align}
+ V_{ee}[\{\phi_i\}] =& \sum_{i,j} \iint \frac{\phi_i(\bm{r})\phi_j(\bm{r'})\phi_i^*(\bm{r})\phi_j^*(\bm{r'})}{|\bm{r}-\bm{r'}|} \mathrm{d^3}\bm{r} \mathrm{d^3}\bm{r'} + \nonumber \\ &- \sum_{i,j}\iint \frac{\phi_i(\bm{r})\phi_j(\bm{r'})\phi_i^*(\bm{r'})\phi_j^*(\bm{r})}{|\bm{r}-\bm{r'}|} \mathrm{d^3}\bm{r} \mathrm{d^3}\bm{r'}
+ \label{eq:vee-hf}
+\end{align}
+where the first integral is the classical Coulomb potential [$\sum_i \phi_i(\bm{r})\phi_i^*(\bm{r}) = \rho(\bm{r})$] and the second integral has no counterpart in classical physics, being named the \textit{exchange} term.
+
+While in equation \ref{eq:vee-hf} this term cancels out for $i = j$, there is no such cancellation in equation \ref{eq:vee-dft}. For this reason, a number of authors have introduced a part of exact exchange (the second term in \ref{eq:vee-hf}) into DFT calculations giving birth to the hybrid functionals \cite{Perdew2001}. This has resulted in better agreement for bandgaps and bond lengths for a number of compounds, but also in greater computational cost due to the non-locality of the exchange integral in \ref{eq:vee-hf}. This problem was partially overcome by Heyd \textit{et al.} \cite{Heyd2003} by the introduction of a screening parameter $\omega$, which splits the Coulomb operator, in a short range and a long range terms.
+
+\newpage
+
+\section{Published Papers}
+\label{sec:app-pub}
+
+\includepdf[pages={-}]{data/PadilhaPRB.pdf}
+
+\includepdf[pages={-}]{data/PadilhaPRAppl.pdf}
+
+\newpage
+
+\section{Submitted Papers}
+\label{sec:app-sub}
+
+\includepdf[pages={-}]{data/PadilhaPRL.pdf}
+
+\includepdf[pages={1-8}]{data/HannesPRAppl.pdf}
