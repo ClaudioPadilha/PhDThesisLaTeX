@@ -1,0 +1,138 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Fonte, Papel, Estilo ============================================================%
+\documentclass[12pt, a4paper]{scrbook}
+%==================================================================================%
+
+% Pacotes =========================================================================%
+\usepackage[utf8x]{inputenc}
+%\usepackage[brazil]{babel}
+\usepackage{indentfirst}
+\usepackage{graphicx,fancyhdr,color}
+\usepackage{fancyhdr}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage[toc,page]{appendix}
+\usepackage{bbold}
+\usepackage{caption}
+\usepackage{tabularx}
+\usepackage{subcaption}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{braket}
+\usepackage{nicefrac}
+\usepackage{bbm}                    %fonte \mathbbm{} do símbolo 1 da matriz identidade
+%\usepackage{subfigure}              %opção para figuras múltiplas
+\usepackage[nottoc]{tocbibind}
+\usepackage[left=2.5cm, right=2.5cm, top=2.0cm, bottom=2.0cm, includefoot, headheight=13.6pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[amssymb]{SIunits}
+\usepackage[square, comma, numbers, sort&compress]{natbib}
+%\usepackage{axodraw4j}
+\usepackage[colorlinks]{hyperref}
+\usepackage[figure,table]{hypcap}
+\usepackage{hhline}
+\usepackage{longtable}
+\usepackage{rotating}
+\usepackage{pdfpages}
+\usepackage{bm}
+%==================================================================================%
+
+% PDF hyper-linking (set colors to black for printing) ============================%
+\hypersetup{
+	bookmarksnumbered,
+	pdfstartview={FitH},
+	citecolor={blue},
+	linkcolor={red},
+	urlcolor={blue},
+	pdfpagemode={UseOutlines}
+}
+
+% Comandos, Definições ============================================================%
+\pagestyle{fancy}
+\fancyhf{}							%limpar configurações
+\fancyhead[LE,RO]{\bfseries\thepage}				%externo - número da página
+\fancyhead[LO]{\bfseries\nouppercase{\rightmark}}		%interno ímpar - seção
+\fancyhead[RE]{\bfseries\nouppercase{\leftmark}}		%interno par - capítulo
+\fancyhead{}                        				%sem cabeçalhos em páginas limpas
+\fancypagestyle{plain}{}
+
+\renewcommand{\headrulewidth}{0pt}				%sem linhas
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}			%cabeçalhos em minúsculas
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\renewcommand{\headrulewidth}{0.5pt}				%linha horizontal
+\renewcommand{\footrulewidth}{0pt}
+%\renewcommand{\sin}{\operatorname{sen}}				%traduzir sin para sen
+\newcommand{\eq}[1]{(\ref{#1})}					%coloca as referências de equações entre parênteses
+\newcommand{\bracket}[2]{\langle #1|#2 \rangle}
+
+\addtolength{\headheight}{0.5pt}    %espaço para a linha
+\textwidth=15.38cm                  %opções de delimitação do texto
+\textheight=22.5cm
+\topmargin=-0.65cm
+\oddsidemargin=0.3cm
+\evensidemargin=-0.3cm
+
+\bibliographystyle{unsrtnat}	%bibliografia Nature Style
+%==================================================================================%
+
+% Cabeçalho das páginas e rodapé ==================================================%
+  \renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter\ - #1}{}}
+%  \lhead[\fancyplain{}{\slshape \rightmark}]{\fancyplain{}{\slshape \leftmark}}
+  \lhead[\fancyplain{}{\slshape \leftmark}]{}
+  \chead{}
+%  \rhead[\fancyplain{}{\slshape \leftmark}]{\fancyplain{}{\slshape \rightmark}}
+  \rhead[]{\fancyplain{}{\slshape \rightmark}}
+  \lfoot{}
+  \cfoot{\thepage}
+  \rfoot{}
+  \renewcommand{\headrulewidth}{0.7pt}
+  \renewcommand{\footrulewidth}{0.7pt}
+
+% Esqueleto, Inputs ===============================================================%
+
+\begin{document}
+
+\input{folha-rosto-nano.tex}                  %folha de rosto
+
+\includepdf[pages={-}]{burocracia/ficha-catalografica.pdf} %ficha catalografica
+
+\newpage
+
+\baselineskip 8.75 mm               %
+
+% folha de assinaturas da banca
+% USAR ORIGINAL NA VERSÃO IMPRESSA!!
+\includepdf[pages={3}]{burocracia/Ata.pdf}
+
+\newpage
+
+% declaração de atendimento às observações da banca
+% USAR ORIGINAL NA VERSÃO IMPRESSA!!
+\includepdf[pages={-}]{burocracia/alteracoes-sign-200dpi.pdf}
+                                    %
+\thispagestyle{empty}               %
+                                    %
+\vspace*{-0.7cm}                    %
+
+\input{pre.tex}            %dedicatórias, versos, agradecimentos
+                                    %
+\input{abstract.tex}                  %resumo / abstract
+                                    %
+\tableofcontents                    %cria o índice automaticamente
+\mainmatter                         %
+                                    %
+\input{intro.tex}		          %chap 1
+\input{raw_materials.tex}     %chap 2
+\input{band_offset.tex}       %chap 3
+\input{charge_states.tex}     %chap 4
+\input{band_bend.tex}         %chap 5
+\input{conclusions.tex}       %chap 6
+
+\renewcommand{\chaptername}{Appendix}	%troca a palavra "Capítulo" por "Apêndice"
+
+\input{appendix.tex}			%apêndices
+
+\bibliography{thesis}		%bibliografia
+\end{document}
+%==================================================================================%
